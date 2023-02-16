@@ -1,0 +1,12 @@
+codeworld:
+  jwt:
+    secret: codeworld@Login(Auth}*^31)&codeworld% # 用于生存rsa公钥和私钥的密文,越复杂越好
+    pubKeyPath: \xiangmu\demo\codeworld-cloud-shop-master\rsa.pub # 公钥地址
+    priKeyPath: \xiangmu\demo\codeworld-cloud-shop-master\rsa.pri # 私钥地址
+    expire: 60   # 过期时间,单位分钟,时间为一周
+    cookieMaxAge: 180000
+    cookieName: token
+wx:
+  code2Session: https://api.weixin.qq.com/sns/jscode2session
+  appid: #小程序Appid
+  secret: # 小程序密钥

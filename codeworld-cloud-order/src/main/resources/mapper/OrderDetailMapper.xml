@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.codeworld.fc.order.mapper.OrderDetailMapper">
+
+    <resultMap id="BaseOrderDetailMap" type="com.codeworld.fc.order.entity.OrderDetail">
+
+        <id property="detailId" column="t_order_detail_id"/>
+        <result property="orderId" column="t_order_id"/>
+        <result property="productSkuId" column="t_product_sku_id"/>
+        <result property="productCount" column="t_product_count"/>
+        <result property="productTitle" column="t_product_title"/>
+        <result property="productSkuDetail" column="t_product_sku_detail"/>
+        <result property="productPrice" column="t_product_price"/>
+        <result property="productImage" column="t_product_image"/>
+        <result property="createTime" column="t_order_create_time"/>
+        <result property="orderDeliveryNumber" column="t_order_delivery_number"/>
+    </resultMap>
+
+    <!-- 添加订单明细 -->
+    <insert id="saveOrderDetail" parameterType="com.codeworld.fc.order.entity.OrderDetail">
+
+        insert into
+        codeworld_order_detail
+        (
+        t_order_detail_id,
+        t_order_id,
+        t_product_sku_id,
+        t_product_count,
+        t_product_title,
+        t_product_sku_detail,
+        t_product_price,
+        t_product_image,
+        t_order_create_time,
+        t_merchant_number
+        )
+        values
+        (
+        #{detailId},
+        #{orderId},
+        #{productSkuId},
+        #{productCount},
+        #{productTitle},
+        #{productSkuDetail},
+        #{productPrice},
+        #{productImage},
+        #{createTime},
+        #{merchantNumber}
+        )
+    </insert>
+
+    <!-- 根据订单编号查询订单下的商品详细信息 -->
+    <select id="getOrderDetailByOrderId" parameterType="java.lang.Long" resultMap="BaseOrderDetailMap">
+
+        select
+        *
+        from
+        codeworld_order_detail
+        where t_order_id = #{orderId}
+    </select>
+
+    <select id="getOrderDetailByOrderDetailId" parameterType="java.lang.Long" resultMap="BaseOrderDetailMap">
+        select
+        *
+        from
+        codeworld_order_detail
+        where t_order_Detail_id = #{orderDetailId}
+    </select>
+
+    <!-- 根据订单号和商户号查询订单详情 -->
+    <select id="getOrderDetailByOrderIdAndMerchantNumber" parameterType="hashmap" resultMap="BaseOrderDetailMap">
+
+        select
+        *
+        from
+        codeworld_order_detail
+        where
+        t_order_id = #{orderId}
+        <if test="merchantNumber != null">
+            and t_merchant_number = #{merchantNumber}
+        </if>
+    </select>
+
+    <select id="getMerchantDashBoardOrderTotalCount" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        select
+        count(cod.t_order_detail_id)
+        from
+        codeworld_order_detail AS cod
+        where
+        cod.t_merchant_number = #{merchantNumber}
+    </select>
+    <select id="getMerchantDashBoardPendingPayCount" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        select
+        count(cod.t_order_detail_id)
+        from
+        codeworld_order_detail AS cod
+        left join codeworld_order_status AS cos on cod.t_order_detail_id = cos.t_order_id
+        where
+        cod.t_merchant_number = #{merchantNumber} and cos.t_order_status = 1
+    </select>
+    <select id="getMerchantDashBoardToBeDeliveredCount" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        select
+        count(cod.t_order_detail_id)
+        from
+        codeworld_order_detail AS cod
+        left join codeworld_order_status AS cos on cod.t_order_detail_id = cos.t_order_id
+        where
+        cod.t_merchant_number = #{merchantNumber} and cos.t_order_status = 2
+    </select>
+
+    <select id="getMerchantDashBoardShippedCount" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        select
+        count(cod.t_order_detail_id)
+        from
+        codeworld_order_detail AS cod
+        left join codeworld_order_status AS cos on cod.t_order_detail_id = cos.t_order_id
+        where
+        cod.t_merchant_number = #{merchantNumber} and cos.t_order_status = 3
+    </select>
+    <select id="getMerchantDashBoardReceivedCount" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        select
+        count(cod.t_order_detail_id)
+        from
+        codeworld_order_detail AS cod
+        left join codeworld_order_status AS cos on cod.t_order_detail_id = cos.t_order_id
+        where
+        cod.t_merchant_number = #{merchantNumber} and cos.t_order_status = 4
+    </select>
+    <select id="getMerchantDashBoardRefundingCount" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        select
+        count(cod.t_order_detail_id)
+        from
+        codeworld_order_detail AS cod
+        left join codeworld_order_return AS cor on cod.t_order_detail_id = cor.t_order_id
+        where
+        cod.t_merchant_number = #{merchantNumber} and cor.t_return_order_status = 1
+    </select>
+    <select id="getMerchantDashBoardAfterSaleCount" parameterType="java.lang.String"
+            resultType="java.lang.Integer">
+        select
+        count(cod.t_order_detail_id)
+        from
+        codeworld_order_detail AS cod
+        left join codeworld_order_return AS cor on cod.t_order_detail_id = cor.t_order_id
+        where
+        cod.t_merchant_number = #{merchantNumber} and cor.t_return_order_status = 0
+    </select>
+
+    <!-- 根据订单号和物流号查询是否存在 -->
+    <select id="checkOrderIdAndDeliveryNumberExist" parameterType="hashmap" resultType="com.codeworld.fc.order.entity.OrderDetail">
+        select
+        t_order_detail_id AS detailId
+        from
+        codeworld_order_detail
+        where
+        t_order_detail_id = #{orderId}
+        and
+        t_order_delivery_number = #{deliveryNumber}
+    </select>
+    <!-- 订单发货 -->
+    <update id="orderDelivery" parameterType="com.codeworld.fc.order.entity.OrderDetail">
+        update
+        codeworld_order_detail
+        set
+        t_order_delivery_company = #{orderDeliveryCompany},
+        t_order_delivery_sn = #{orderDeliverySn},
+        t_order_delivery_number = #{orderDeliveryNumber}
+        where
+        t_order_Detail_id = #{detailId}
+    </update>
+</mapper>

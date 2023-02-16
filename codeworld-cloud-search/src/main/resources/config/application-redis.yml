@@ -1,0 +1,5 @@
+spring:
+  redis:
+    database: 3 # 保存商品浏览量、点击量、销量
+    host: 127.0.0.1
+    password:

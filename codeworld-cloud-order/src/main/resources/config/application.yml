@@ -1,0 +1,17 @@
+server:
+  port: 2001
+spring:
+  application:
+    name: codeworld-cloud-order
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active:
+      - config
+    include:
+      - admin
+      - config
+      - db
+      - mybatis
+      - nacos
+      - redis

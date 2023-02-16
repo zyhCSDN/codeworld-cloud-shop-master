@@ -1,0 +1,16 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: codeworld-cloud-system
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active:
+      - config
+    include:
+      - config
+      - db
+      - mybatis
+      - nacos
+      - redis

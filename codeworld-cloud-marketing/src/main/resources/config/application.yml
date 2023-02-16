@@ -1,0 +1,18 @@
+server:
+  port: 9003
+spring:
+  application:
+    name: codeworld-cloud-marketing
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active:
+      - config
+    include:
+      - config
+      - db
+      - mybatis
+      - nacos
+      - rabbitmq
+      - redis
+      - xxl

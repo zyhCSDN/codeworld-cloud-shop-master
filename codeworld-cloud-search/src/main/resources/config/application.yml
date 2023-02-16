@@ -1,0 +1,17 @@
+server:
+  port: 7001
+spring:
+  application:
+    name: codeworld-cloud-search
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active:
+      - config
+    include:
+      - config
+      - db
+      - es
+      - nacos
+      - rabbitmq
+      - redis

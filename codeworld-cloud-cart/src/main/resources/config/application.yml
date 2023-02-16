@@ -1,0 +1,18 @@
+server:
+  port: 3001
+spring:
+  application:
+    name: codeworld-cloud-cart
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active:
+      - config
+    include:
+      - admin
+      - config
+      - db
+      - mybatis
+      - nacos
+      - rabbitmq
+      - redis

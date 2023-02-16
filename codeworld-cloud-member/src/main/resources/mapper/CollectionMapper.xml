@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.codeworld.fc.collection.mapper.CollectionMapper">
+
+    <insert id="collectionProduct" parameterType="com.codeworld.fc.collection.entity.Collection">
+        insert into codeworld_collection
+        (t_collection_id,
+         t_product_id,
+         t_product_sku_id,
+         t_member_id,
+         t_collection_time,
+         t_product_image,
+         t_product_title,
+         t_product_price)
+        values (#{id},
+                #{productId},
+                #{productSkuId},
+                #{memberId},
+                #{collectionTime},
+                #{image},
+                #{title},
+                #{price})
+    </insert>
+
+    <select id="getMemberCollectionByPage" parameterType="java.lang.Long"
+            resultType="com.codeworld.fc.collection.response.CollectionResponse">
+        select t_collection_id  AS id,
+               t_product_id     AS productId,
+               t_product_sku_id AS productSkuId,
+               t_product_image  AS productImage,
+               t_product_title  AS productTitle,
+               t_product_price  AS productPrice
+        from codeworld_collection
+        where t_member_id = #{memberId}
+    </select>
+
+    <select id="isCollect" resultType="int">
+        select count(t_collection_id)
+        from codeworld_collection
+        where t_member_id = #{memberId}
+          and t_product_id = #{productId}
+
+    </select>
+
+    <delete id="cancelCollect">
+        delete
+        from codeworld_collection
+        where t_member_id = #{memberId}
+          and t_product_id = #{productId};
+    </delete>
+
+    <select id="getCollectCountByProductId" parameterType="long"
+            resultType="long">
+        select count(t_collection_id)
+        from codeworld_collection
+        where t_product_id = #{productId}
+    </select>
+</mapper>

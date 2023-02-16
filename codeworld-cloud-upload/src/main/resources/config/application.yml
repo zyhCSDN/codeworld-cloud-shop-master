@@ -1,0 +1,12 @@
+server:
+  port: 6001
+spring:
+  application:
+    name: codeworld-cloud-upload
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active:
+      - config
+    include:
+      - nacos

@@ -1,0 +1,8 @@
+spring:
+  rabbitmq:
+    virtual-host: /
+    host: 127.0.0.1
+    username: guest
+    password: guest
+    template:
+      exchange: CODEWORLD-SHOP.EXCHANGE #默认交换机CODEWORLD-SHOP.EXCHANGE

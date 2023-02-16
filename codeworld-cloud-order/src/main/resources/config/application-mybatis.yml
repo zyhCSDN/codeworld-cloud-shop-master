@@ -1,0 +1,14 @@
+mybatis-plus:
+  mapper-locations:
+    - classpath:mapper/*.xml
+    - classpath*:com/gitee/sunchenbin/mybatis/actable/mapping/*/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+actable:
+  table:
+    auto: update
+  model:
+    pack: com.codeworld.fc.order.entity
+  database:
+    type: mysql

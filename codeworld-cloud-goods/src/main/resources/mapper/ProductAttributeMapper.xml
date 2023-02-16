@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.codeworld.fc.goods.product.mapper.ProductAttributeMapper">
+
+
+    <!-- 添加商品和属性之间的关系 -->
+    <insert id="add" parameterType="com.codeworld.fc.goods.product.entity.ProductAttribute">
+        insert into codeworld_product_attribute
+        (
+        t_product_id,
+        t_attribute_id
+        )
+        values
+        (
+        #{productId},
+        #{attributeId}
+        )
+    </insert>
+
+    <!--是否存在商品使用该属性 -->
+    <select id="wheatherExist" parameterType="java.lang.Long"
+            resultType="integer">
+        select
+        count(t_product_id)
+        from
+        codeworld_product_attribute
+        where
+        t_attribute_id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,13 @@
+server:
+  port: 4001
+spring:
+  application:
+    name: codeworld-cloud-sms
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    active:
+      - config
+    include:
+      - nacos
+      - redis
